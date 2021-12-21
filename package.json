@@ -2,7 +2,7 @@
   "name": "covid19statistics",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://donghopark.github.io/Covid19Statistics",
+  "homepage": "http://donghopark.github.io/covid19statistics",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",

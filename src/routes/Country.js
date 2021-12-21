@@ -62,7 +62,6 @@ function Country() {
         [fullyVaccinatedData, totalDosesData, covidCasesData, covidDeathsData]
     )
 
-    console.log(data)
     const axes = React.useMemo(
         () => [
             { primary: true, type: 'linear', position: 'bottom' },

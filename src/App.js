@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import './App.css';
 
 function App() {
-  const [latestPerPopData, setLatestPerPopData] = useState([]);
-  const [countryData, setCountryData] = useState([]);
+  const [latestPerPopData, setLatestPerPopData] = useState([]);  
   const POPULATION = 4000000
   const latestPerPopDataURL = "https://graphics.thomsonreuters.com/data/2020/coronavirus/owid-covid-vaccinations/latest-perpop-data-all.json"
   const statisticsURL = "https://graphics.thomsonreuters.com/data/2020/coronavirus/global-tracker/statistics.json"
@@ -41,13 +40,6 @@ function App() {
         console.log(error)
       })
   }, [])
-
-  useEffect(() => {
-    if (latestPerPopData.length) {
-      
-    }
-  }, [])
-
 
   const columns = [
     {
@@ -130,10 +122,8 @@ function App() {
       key: 'vaccineName'
     },
   ];
-  const data = latestPerPopData.filter(row => row.population > POPULATION).map(row => {
-    const countryDatum = countryData.find(datum => datum.country == row.country)
-    if (!countryDatum) return { ...row, key: row.country, percentage: row.peopleFullyVaccinated / row.population * 100 }
-    return { ...row, key: row.country, percentage: row.peopleFullyVaccinated / row.population * 100, totalCases: countryDatum.totalCases, totalDeaths: countryDatum.totalDeaths }
+  const data = latestPerPopData.filter(row => row.population > POPULATION).map(row => {    
+    return { ...row, key: row.country, percentage: row.peopleFullyVaccinated / row.population * 100 }    
   })
 
   return (

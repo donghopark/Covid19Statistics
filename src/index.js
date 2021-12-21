@@ -4,16 +4,16 @@ import './index.css';
 import App from './App';
 import Country from './routes/Country'
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { HashRouter, BrowserRouter, Routes, Route } from "react-router-dom";
+import {  } from "react-router-dom";
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/country/:country" element={<Country />} />        
       </Routes>      
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
