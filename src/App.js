@@ -28,7 +28,6 @@ function App() {
             
             latestPerPopdatum['latestTotalCases'] = latestTotalCases
             latestPerPopdatum['latestTotalDeaths'] = latestTotalDeaths
-            console.log(latestPerPopdatum)
             return latestPerPopdatum
             
           })
@@ -49,7 +48,6 @@ function App() {
     }
   }, [])
 
-  console.log(latestPerPopData)
 
   const columns = [
     {
