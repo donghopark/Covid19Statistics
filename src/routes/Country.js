@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Chart } from "react-charts";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, } from 'chart.js';
+import { Line } from 'react-chartjs-2';
 import { useParams } from "react-router-dom";
 import moment from 'moment'
 import '../App.css';
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 function Country() {
     const params = useParams();
@@ -36,48 +48,156 @@ function Country() {
             })
     }, [params])
 
-    const allDates = React.useMemo(() => fullyVaccinatedData.map(datum => datum.date).concat(totalDosesData.map(datum => datum.date)).concat(covidCasesData.map(datum => datum.date)).concat(covidDeathsData.map(datum => datum.date)).filter((value, index, self) => self.indexOf(value) == index).sort((a, b) => moment(a).isBefore(moment(b)) ? -1 : 1),
-        [fullyVaccinatedData, totalDosesData, covidCasesData, covidDeathsData])
+
+    // const data = React.useMemo(
+    //     () => [
+    //         {
+    //             label: 'Covid Cases',
+    //             // secondaryAxisId: "3",
+    //             data: covidCasesData.map((datum, index) => ({ date: moment(datum.date, 'YYYY-MM-DD').toDate(), count: datum.count })),
+    //         },
+    //         {
+    //             label: 'Deaths',
+    //             // secondaryAxisId: "3",
+    //             data: covidDeathsData.map((datum, index) => ({ date: moment(datum.date, 'YYYY-MM-DD').toDate(), count: datum.count })),
+    //         },
+    //         {
+    //             label: 'Fully Vaccinated',
+    //             secondaryAxisId: "2",
+    //             data: fullyVaccinatedData.map((datum, index) => ({ date: moment(datum.date, 'YYYY-MM-DD').toDate(), count: datum.count / 1000 })),
+    //         },
+    //         {
+    //             label: 'Total Doses',
+    //             secondaryAxisId: "2",
+    //             data: totalDosesData.map((datum, index) => ({ date: moment(datum.date, 'YYYY-MM-DD').toDate(), count: datum.count / 1000 })),
+    //         },
+    //     ],
+    //     [fullyVaccinatedData, totalDosesData, covidCasesData, covidDeathsData]
+    // )
+    // const primaryAxis = React.useMemo(
+    //     () => ({
+    //         type: 'timeLocal',
+    //         getValue: datum => datum.date,
+    //     }),
+    //     []
+    // )
+
+    // const secondaryAxes = React.useMemo(
+    //     () => [
+    //         {
+    //             type: 'linear',
+    //             elementType: 'line',
+    //             getValue: datum => datum.count,
+    //         },
+    //         {
+    //             id: "2",
+    //             type: 'linear',
+    //             elementType: 'line',
+    //             getValue: datum => datum.count,
+    //         },
+    //     ],
+    //     []
+    // )
 
 
+    const allDates = covidCasesData.map(datum => datum.date).concat(covidDeathsData.map(datum => datum.date)).concat(fullyVaccinatedData.map(datum => datum.date)).concat(totalDosesData.map(datum => datum.date)).filter((value, index, self) => self.indexOf(value) == index)
+    const labels = allDates.map(dateString => moment(dateString).format('YYYY-MMM-DD'))
     const data = React.useMemo(
-        () => [
-            {
-                label: 'Fully Vaccinated',
-                data: fullyVaccinatedData.map((datum, index) => [allDates.indexOf(datum.date), datum.count / 10000]),
-            },
-            {
-                label: 'Total Doses',
-                data: totalDosesData.map((datum, index) => [allDates.indexOf(datum.date), datum.count / 10000]),
-            },
-            {
-                label: 'Covid Cases',
-                data: covidCasesData.map((datum, index) => [allDates.indexOf(datum.date), datum.count]),
-            },
-            {
-                label: 'Deaths',
-                data: covidDeathsData.map((datum, index) => [allDates.indexOf(datum.date), datum.count]),
-            },
-        ],
+        () => ({
+            labels,
+            datasets: [
+
+                {
+                    label: 'Covid Cases',
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    yAxisID: 'y',
+                    data: allDates.map(date => {
+                        const datum = covidCasesData.find(datum => datum.date == date)
+                        if (datum) return datum.count
+                        return undefined
+                    }) 
+                },
+                {
+                    label: 'Deaths',
+                    borderColor: 'rgb(53, 162, 235)',
+                    backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                    yAxisID: 'y',
+                    data: allDates.map(date => {
+                        const datum = covidDeathsData.find(datum => datum.date == date)
+                        if (datum) return datum.count
+                        return undefined
+                    })                     
+                },
+                {
+                    label: 'Fully Vaccinated',  
+                    borderColor: 'rgb(53, 255, 235)',
+                    backgroundColor: 'rgba(53, 255, 235, 0.5)',
+                    yAxisID: 'y1',             
+                    data: allDates.map(date => {
+                        const datum = fullyVaccinatedData.find(datum => datum.date == date)
+                        if (datum) return datum.count
+                        return undefined
+                    })  
+                },
+                {
+                    label: 'Total Doses',
+                    borderColor: 'rgb(53, 162, 111)',
+                    backgroundColor: 'rgba(53, 162, 111, 0.5)',
+                    yAxisID: 'y1',
+                    data: allDates.map(date => {
+                        const datum = totalDosesData.find(datum => datum.date == date)
+                        if (datum) return datum.count
+                        return undefined
+                    })                      
+                },
+            ]
+        }),
         [fullyVaccinatedData, totalDosesData, covidCasesData, covidDeathsData]
     )
 
-    const axes = React.useMemo(
-        () => [
-            { primary: true, type: 'linear', position: 'bottom' },
-            { type: 'linear', position: 'left' }
-        ],
-        []
-    )
+    
 
-    if (!fullyVaccinatedData.length) return <></>
+
+    const options = {
+        responsive: true,
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
+        stacked: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Covid-19 Statistics',
+            },
+        },
+        scales: {
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                grid: {
+                    drawOnChartArea: false,
+                },
+            },
+        },
+    };
+
+
     return (
         <div style={{
             position: 'absolute',
-            width: '100%',
-            height: '100%'
-        }}>
-            <Chart data={data} axes={axes} tooltip />
+            width: '95%',
+            height: '95%'
+        }}>            
+            {/* <Chart options={{ data, primaryAxis, secondaryAxes, }} /> */}
+            <Line options={options} data={data} />
         </div>
     );
 }
