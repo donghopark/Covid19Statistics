@@ -111,6 +111,7 @@ function Country() {
                     label: 'Covid Cases',
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    pointRadius: 1,
                     yAxisID: 'y',
                     data: allDates.map(date => {
                         const datum = covidCasesData.find(datum => datum.date == date)
@@ -122,6 +123,7 @@ function Country() {
                     label: 'Deaths',
                     borderColor: 'rgb(53, 162, 235)',
                     backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                    pointRadius: 1,
                     yAxisID: 'y',
                     data: allDates.map(date => {
                         const datum = covidDeathsData.find(datum => datum.date == date)
@@ -133,6 +135,7 @@ function Country() {
                     label: 'Fully Vaccinated',  
                     borderColor: 'rgb(53, 255, 235)',
                     backgroundColor: 'rgba(53, 255, 235, 0.5)',
+                    pointRadius: 1,
                     yAxisID: 'y1',             
                     data: allDates.map(date => {
                         const datum = fullyVaccinatedData.find(datum => datum.date == date)
@@ -144,6 +147,7 @@ function Country() {
                     label: 'Total Doses',
                     borderColor: 'rgb(53, 162, 111)',
                     backgroundColor: 'rgba(53, 162, 111, 0.5)',
+                    pointRadius: 1,
                     yAxisID: 'y1',
                     data: allDates.map(date => {
                         const datum = totalDosesData.find(datum => datum.date == date)
