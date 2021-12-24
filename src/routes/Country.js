@@ -106,9 +106,8 @@ function Country() {
         () => ({
             labels,
             datasets: [
-
                 {
-                    label: 'Covid Cases',
+                    label: 'Covid Cases(Left)',
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgba(255, 99, 132, 0.5)',
                     pointRadius: 1,
@@ -120,7 +119,7 @@ function Country() {
                     })
                 },
                 {
-                    label: 'Deaths',
+                    label: 'Deaths(Left)',
                     borderColor: 'rgb(53, 162, 235)',
                     backgroundColor: 'rgba(53, 162, 235, 0.5)',
                     pointRadius: 1,
@@ -132,7 +131,19 @@ function Country() {
                     })
                 },
                 {
-                    label: 'Fully Vaccinated',
+                    label: 'Daily Doses(Right 1)',
+                    borderColor: 'rgb(111, 99, 132)',
+                    backgroundColor: 'rgba(111, 99, 132, 0.5)',
+                    pointRadius: 1,
+                    yAxisID: 'y2',
+                    data: allDates.map(date => {
+                        const datum = dailyDosesdData.find(datum => datum.date == date)
+                        if (datum) return datum.count
+                        return undefined
+                    })
+                },
+                {
+                    label: 'Fully Vaccinated(Right 2)',
                     borderColor: 'rgb(53, 255, 235)',
                     backgroundColor: 'rgba(53, 255, 235, 0.5)',
                     pointRadius: 1,
@@ -144,7 +155,7 @@ function Country() {
                     })
                 },
                 {
-                    label: 'Total Doses',
+                    label: 'Total Doses(Right 2)',
                     borderColor: 'rgb(53, 162, 111)',
                     backgroundColor: 'rgba(53, 162, 111, 0.5)',
                     pointRadius: 1,
@@ -155,9 +166,10 @@ function Country() {
                         return undefined
                     })
                 },
+                
             ]
         }),
-        [fullyVaccinatedData, totalDosesData, covidCasesData, covidDeathsData]
+        [fullyVaccinatedData, totalDosesData, dailyDosesdData, covidCasesData, covidDeathsData]
     )
 
 
@@ -182,6 +194,14 @@ function Country() {
                 display: true,
                 position: 'left',
             },
+            y2: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                grid: {
+                    drawOnChartArea: false,
+                },
+            },
             y1: {
                 type: 'linear',
                 display: true,
@@ -190,6 +210,7 @@ function Country() {
                     drawOnChartArea: false,
                 },
             },
+            
         },
     };
 
