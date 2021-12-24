@@ -117,7 +117,7 @@ function Country() {
                         const datum = covidCasesData.find(datum => datum.date == date)
                         if (datum) return datum.count
                         return undefined
-                    }) 
+                    })
                 },
                 {
                     label: 'Deaths',
@@ -129,19 +129,19 @@ function Country() {
                         const datum = covidDeathsData.find(datum => datum.date == date)
                         if (datum) return datum.count
                         return undefined
-                    })                     
+                    })
                 },
                 {
-                    label: 'Fully Vaccinated',  
+                    label: 'Fully Vaccinated',
                     borderColor: 'rgb(53, 255, 235)',
                     backgroundColor: 'rgba(53, 255, 235, 0.5)',
                     pointRadius: 1,
-                    yAxisID: 'y1',             
+                    yAxisID: 'y1',
                     data: allDates.map(date => {
                         const datum = fullyVaccinatedData.find(datum => datum.date == date)
                         if (datum) return datum.count
                         return undefined
-                    })  
+                    })
                 },
                 {
                     label: 'Total Doses',
@@ -153,14 +153,14 @@ function Country() {
                         const datum = totalDosesData.find(datum => datum.date == date)
                         if (datum) return datum.count
                         return undefined
-                    })                      
+                    })
                 },
             ]
         }),
         [fullyVaccinatedData, totalDosesData, covidCasesData, covidDeathsData]
     )
 
-    
+
 
 
     const options = {
@@ -173,7 +173,7 @@ function Country() {
         plugins: {
             title: {
                 display: true,
-                text: 'Covid-19 Statistics',
+                text: `Covid-19 Statistics: ${params.country}`,
             },
         },
         scales: {
@@ -199,7 +199,7 @@ function Country() {
             position: 'absolute',
             width: '95%',
             height: '95%'
-        }}>            
+        }}>
             {/* <Chart options={{ data, primaryAxis, secondaryAxes, }} /> */}
             <Line options={options} data={data} />
         </div>
