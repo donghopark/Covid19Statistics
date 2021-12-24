@@ -89,7 +89,8 @@ function App() {
       width: 100,
       dataIndex: 'latestTotalCases',
       key: 'latestTotalCases',
-      sorter: (a, b) => a.latestTotalCases - b.latestTotalCases,      
+      sorter: (a, b) => a.latestTotalCases - b.latestTotalCases,     
+      render: (value) => value?.toLocaleString() 
     },
     {
       title: 'Total Cases(%)',
@@ -104,7 +105,8 @@ function App() {
       width: 100,
       dataIndex: 'latestTotalDeaths',
       key: 'latestTotalDeaths',
-      sorter: (a, b) => a.latestTotalDeaths - b.latestTotalDeaths,      
+      sorter: (a, b) => a.latestTotalDeaths - b.latestTotalDeaths,   
+      render: (value) => value?.toLocaleString()   
     },
     
     {
