@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Space, Switch, Table, Tooltip } from 'antd';
 import { Link } from "react-router-dom";
+import ReactGA from 'react-ga';
 import './App.css';
 
 function App() {  
@@ -16,6 +17,10 @@ function App() {
   // https://graphics.thomsonreuters.com/data/2020/coronavirus/owid-covid-vaccinations/latest-perpop-data-all.json
   // https://graphics.thomsonreuters.com/data/2020/coronavirus/global-tracker/countries/south-korea/counts/all.json
   // https://graphics.thomsonreuters.com/data/2020/coronavirus/owid-covid-vaccinations/countries/south-korea/data.json
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.hash);
+  }, []);
+
   useEffect(() => {
     fetch(latestPerPopDataURL)
       .then(res => res.json())

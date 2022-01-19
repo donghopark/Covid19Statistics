@@ -3,6 +3,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Line } from 'react-chartjs-2';
 import { useParams } from "react-router-dom";
 import moment from 'moment'
+import ReactGA from 'react-ga';
 import '../App.css';
 
 ChartJS.register(
@@ -25,6 +26,10 @@ function Country() {
     const [covidDeathsData, setCovidDeathsData] = useState([]);
     const vaccinationDataURL = `https://graphics.thomsonreuters.com/data/2020/coronavirus/owid-covid-vaccinations/countries/${country}/data.json`
     const covidDataURL = `https://graphics.thomsonreuters.com/data/2020/coronavirus/global-tracker/countries/${country}/counts/all.json`
+
+    useEffect(() => {
+        ReactGA.pageview(window.location.pathname + window.location.hash);
+      }, []);
 
     useEffect(() => {
         fetch(vaccinationDataURL)

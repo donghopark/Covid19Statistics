@@ -5,6 +5,10 @@ import App from './App';
 import Country from './routes/Country'
 import reportWebVitals from './reportWebVitals';
 import { HashRouter, Routes, Route } from "react-router-dom";
+import ReactGA from 'react-ga';
+
+ReactGA.initialize('UA-135259921-1');
+
 ReactDOM.render(
   <React.StrictMode>
     <HashRouter>
