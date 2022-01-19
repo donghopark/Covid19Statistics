@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Chart } from "react-charts";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useParams } from "react-router-dom";
