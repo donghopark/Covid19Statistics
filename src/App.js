@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Table } from 'antd';
+import { Space, Switch, Table, Tooltip } from 'antd';
 import { Link } from "react-router-dom";
 import './App.css';
 
-function App() {
-  const [latestPerPopData, setLatestPerPopData] = useState([]);  
+function App() {  
+  const [latestPerPopData, setLatestPerPopData] = useState([]);
+  const [oecdOnly, setOECDOnly] = useState(true);
   const POPULATION = 4000000
+  const OECD = ['AUSTRALIA', 'AUSTRIA', 'BELGIUM', 'CANADA', 'CHILE', 'COLOMBIA', 'COSTA RICA', 'CZECH REPUBLIC', 'DENMARK', 'ESTONIA',
+    'FINLAND', 'FRANCE', 'GERMANY', 'GREECE', 'HUNGARY', 'ICELAND', 'IRELAND', 'ISRAEL', 'ITALY', 'JAPAN', 'SOUTH KOREA',
+    'LATVIA', 'LITHUANIA', 'LUXEMBOURG', 'MEXICO', 'NETHERLANDS', 'NEW ZEALAND', 'NORWAY', 'POLAND', 'PORTUGAL', 'SLOVAKIA',
+    'SLOVENIA', 'SPAIN', 'SWEDEN', 'SWITZERLAND', 'TURKEY', 'UNITED KINGDOM', 'UNITED STATES']
   const latestPerPopDataURL = "https://graphics.thomsonreuters.com/data/2020/coronavirus/owid-covid-vaccinations/latest-perpop-data-all.json"
   const statisticsURL = "https://graphics.thomsonreuters.com/data/2020/coronavirus/global-tracker/statistics.json"
   // https://graphics.thomsonreuters.com/data/2020/coronavirus/owid-covid-vaccinations/latest-perpop-data-all.json
@@ -19,22 +24,22 @@ function App() {
         // setLatestPerPopData(latestPerPopResult)
 
         fetch(statisticsURL)
-        .then(res => res.json())
-        .then(async (statisticsResult) => {
-          const withStatistics = latestPerPopResult.map(latestPerPopdatum => {
-            const latestTotalCases = statisticsResult.latestTotals.cases[latestPerPopdatum.countryISO]
-            const latestTotalDeaths = statisticsResult.latestTotals.deaths[latestPerPopdatum.countryISO]
-            
-            latestPerPopdatum['latestTotalCases'] = latestTotalCases
-            latestPerPopdatum['latestTotalDeaths'] = latestTotalDeaths
-            return latestPerPopdatum
-            
-          })
+          .then(res => res.json())
+          .then(async (statisticsResult) => {
+            const withStatistics = latestPerPopResult.map(latestPerPopdatum => {
+              const latestTotalCases = statisticsResult.latestTotals.cases[latestPerPopdatum.countryISO]
+              const latestTotalDeaths = statisticsResult.latestTotals.deaths[latestPerPopdatum.countryISO]
 
-          setLatestPerPopData(withStatistics)
-        }, (error) => {
-          console.log(error)
-        })
+              latestPerPopdatum['latestTotalCases'] = latestTotalCases
+              latestPerPopdatum['latestTotalDeaths'] = latestTotalDeaths
+              return latestPerPopdatum
+
+            })
+
+            setLatestPerPopData(withStatistics)
+          }, (error) => {
+            console.log(error)
+          })
 
       }, (error) => {
         console.log(error)
@@ -43,7 +48,7 @@ function App() {
 
   const columns = [
     {
-      title: 'Country',
+      title: <Space><div>Country</div><Tooltip title="OECD Only"><Switch defaultChecked={oecdOnly} onChange={(checked) => setOECDOnly(checked)}></Switch></Tooltip></Space>,
       width: 100,
       dataIndex: 'country',
       key: 'country',
@@ -89,8 +94,8 @@ function App() {
       width: 100,
       dataIndex: 'latestTotalCases',
       key: 'latestTotalCases',
-      sorter: (a, b) => a.latestTotalCases - b.latestTotalCases,     
-      render: (value) => value?.toLocaleString() 
+      sorter: (a, b) => a.latestTotalCases - b.latestTotalCases,
+      render: (value) => value?.toLocaleString()
     },
     {
       title: 'Total Cases(%)',
@@ -105,10 +110,10 @@ function App() {
       width: 100,
       dataIndex: 'latestTotalDeaths',
       key: 'latestTotalDeaths',
-      sorter: (a, b) => a.latestTotalDeaths - b.latestTotalDeaths,   
-      render: (value) => value?.toLocaleString()   
+      sorter: (a, b) => a.latestTotalDeaths - b.latestTotalDeaths,
+      render: (value) => value?.toLocaleString()
     },
-    
+
     {
       title: 'Total Deaths(%)',
       width: 100,
@@ -124,8 +129,9 @@ function App() {
       key: 'vaccineName'
     },
   ];
-  const data = latestPerPopData.filter(row => row.population > POPULATION).map(row => {    
-    return { ...row, key: row.country, percentage: row.peopleFullyVaccinated / row.population * 100 }    
+
+  const data = latestPerPopData.filter(row => !oecdOnly || OECD.some(oecd => oecd.toLocaleLowerCase() == row.country.toLocaleLowerCase())).filter(row => row.population > POPULATION).map(row => {
+    return { ...row, key: row.country, percentage: row.peopleFullyVaccinated / row.population * 100 }
   })
 
   return (
