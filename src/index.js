@@ -4,8 +4,7 @@ import './index.css';
 import App from './App';
 import Country from './routes/Country'
 import reportWebVitals from './reportWebVitals';
-import { HashRouter, BrowserRouter, Routes, Route } from "react-router-dom";
-import {  } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 ReactDOM.render(
   <React.StrictMode>
     <HashRouter>
